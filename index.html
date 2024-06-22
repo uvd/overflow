@@ -1,0 +1,35 @@
+<html>
+<script>
+    fetch('https://fullnode.testnet.sui.io', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "sui_getObject",
+            "params": [
+                "0xb15d1953bed624caa8cfa4b9dfdca6d3227d6b1c056a27a8ac1243da436bf4b9",
+                {
+                    "showContent": true,
+                }
+            ]
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            data.result.data.content.fields.project_list.map(e => {
+                return e.fields
+            }).sort((a, b) => {
+                return b.votes - a.votes
+            }).forEach(e => {
+                document.writeln(`${e.votes}  \t ${e.name} <br/>`)
+
+                console.info(`${e.votes}  \t ${e.name}`)
+            })
+        })
+        .catch(error => console.error('Error:', error));
+</script>
+</html>
+
